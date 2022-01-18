@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Large Language Models (LLMs) such as GPT-3 and Codex can plan actions for embodied agents, even without any additional training.">
+  <meta name="keywords" content="GPT-3, Codex, LLMs, Language Models, Knowledge Extraction, Embodied Agents, Action Planning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language Models as Zero-Shot Planners: Extracting Actionable Knowledge for Embodied Agents</title>
+
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="font-size:38.5px">Language Models as Zero-Shot Planners:<br>Extracting Actionable Knowledge for Embodied Agents</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://wenlong.page">Wenlong Huang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="http://people.eecs.berkeley.edu/~pabbeel/">Pieter Abbeel</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cs.cmu.edu/~dpathak/">Deepak Pathak</a><sup>2</sup>*,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=Vzr1RukAAAAJ&hl=en">Igor Mordatch</a><sup>3</sup>*
+            </span>
+            (*equal advising)
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of California, Berkeley,</span>
+            <span class="author-block"><sup>2</sup>Carnegie Mellon University,</span>
+            <span class="author-block"><sup>3</sup>Google Brain</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/XXXX.XXXXX.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/huangwl18/language-planner"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="content">
+            <video autoplay muted loop width=250>
+              <source src="./static/images/virtualhome/browse_internet.mp4" type="video/mp4">
+            </video>
+            <h5>Browse Internet</h5>
+          </div>
+        </div>
+        <div class="column has-text-centered">
+          <div class="content">
+            <video autoplay muted loop width=250>
+              <source src="./static/images/virtualhome/empty_dishwasher.mp4" type="video/mp4">
+            </video>
+            <h5>Empty Dishwasher</h5>
+          </div>
+        </div>
+        <div class="column has-text-centered">
+          <div class="content">
+            <video autoplay muted loop width=250>
+              <source src="./static/images/virtualhome/turn_off_tv.mp4" type="video/mp4">
+            </video>
+            <h5>Turn off TV</h5>
+          </div>
+        </div>
+      </div>
+
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <div class="content">
+          <video autoplay muted loop width=250>
+            <source src="./static/images/virtualhome/organize_closet.mp4" type="video/mp4">
+          </video>
+          <h5>Organize Closet</h5>
+        </div>
+      </div>
+      <div class="column has-text-centered">
+        <div class="content">
+          <video autoplay muted loop width=250>
+            <source src="./static/images/virtualhome/wash_face.mp4" type="video/mp4">
+          </video>
+          <h5>Wash Face</h5>
+        </div>
+      </div>
+      <div class="column has-text-centered">
+        <div class="content">
+          <video autoplay muted loop width=250>
+            <source src="./static/images/virtualhome/take_off_shoes.mp4" type="video/mp4">
+          </video>
+          <h5>Take off Shoes</h5>
+        </div>
+      </div>
+    </div>
+    <h2 class="subtitle has-text-centered">
+      Large Language Models (LLMs) such as GPT-3 and Codex can plan actions for embodied agents,<br>even without any additional training.
+    </h2>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Can world knowledge learned by large language models (LLMs) be used to act in interactive environments? In this paper, we investigate the possibility of grounding high-level tasks, expressed in natural language (e.g. "make breakfast"), to a chosen set of actionable steps (e.g. "open fridge"). While prior work focused on learning from explicit step-by-step examples of how to act, we surprisingly find that if pre-trained LMs are large enough and prompted appropriately, they can effectively decompose high-level tasks into low-level plans without any further training. However, the plans produced naively by LLMs often cannot map precisely to admissible actions. We propose a procedure that conditions on existing demonstrations and semantically translates the plans to admissible actions. Our evaluation in the recent VirtualHome environment shows that the resulting method substantially improves executability over the LLM baseline. The conducted human evaluation reveals a trade-off between executability and correctness but shows a promising sign towards extracting actionable knowledge from language models.
+            </p>
+          </div>
+        </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-max-desktop">
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/XXXX"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3">Extracting Actionable Knowledge from LLMs</h2>
+    <div class="columns is-centered">
+      <div class="column is-three-quarters">
+        <p>Given an arbitrary human activity expressed in natural language, we desire a complete action plan. The action plan must only use a chosen-set of actions supported by a robotic agent. Furthermore, it must include all the <span style="color: orange; font-weight:bold">common-sense steps</span> that are often missed by humans.</p>
+        <p>Although large language models (LLMs) such as GPT-3 and Codex, when prompted with an example, can produce very plausible action plans for complex human activities. Unfortunately, they often cannot be executed in the environment or may contain various linguistic ambiguities because they are expressed in free-form language.</p>
+        <p>In this paper, we propose several tools to improve executability of the produced action plans, which require no further training and thus is not tailored to a particular environment.</p>
+      </div>
+      <div class="column is-one-quarter">
+        <video autoplay muted loop">
+          <source src="./static/images/example.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    
+    <h3 class="title is-4">Admissible Action Translation</h3>
+    <p>For every generated action step, we first enumerate all actions achievable by an agent. Then the model output is translated to the most semantically-similar action achievable by the agent. In this work, we use similarity measure between sentence embeddings produced by a Sentence RoBERTa model, but other choices are shown to work similarly well. The translated action is appended to the existing prompt used to generate the next action step.</p>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-fullwidth">
+        <video autoplay muted loop width="80%">
+          <source src="./static/images/action-translation-animated.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <h3 class="title is-4">Dyanmic Example Selection</h3>
+    <p>In the case that a dataset, or a handful of examples, is available, we can provide weak supervision to the model by prompting the model with an example that is similar to the query task. We re-use the same Sentence RoBERTa model for this purpose, but instead we measure similarity between the query task against all possible examples.</p>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-fullwidth">
+        <video autoplay muted loop width="60%">
+          <source src="./static/images/dynamic-example-animated.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3">Results</h2>
+    <p>We consider two axes for evaluation: <span style="font-weight:bold">executability</span> and <span style="font-weight:bold">correctness</span>. Executability measures whether an action plan can be <span style="font-style:italic">correctly parsed</span> and <span style="font-style:italic">satisfies the common-sense constraints</span> of the environment. Correctness is evaluated by humans, where 10 human annotators determine the semantic correctness of the generated plans.</p>
+    <p>Large language models, such as GPT-3 and Codex, can generate action plans with semantic correctness comparable to those written by humans. However, they are rarely executable in an embodied environment like <span style="color: #305fac; font-weight:bold"><a href="http://virtual-home.org/">VirtualHome</a></span>, unlike the plans written by human experts that use only admissible actions. Using the proposed tools to bias model generation, executability can be significantly improved.</p>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <img src="./static/images/main-results-large.png" width="1800"/>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{huang2021language,
+      title={Language Models as Zero-Shot Planners: Extracting Actionable Knowledge for Embodied Agents},
+      author={Huang, Wenlong and Abbeel, Pieter and Pathak, Deepak and Mordatch, Igor},
+      journal={arXiv preprint arXiv:XXXX.XXXXX},
+      year={2021}
+    }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="content">
+        <p>
+          Website template is borrowed from <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
